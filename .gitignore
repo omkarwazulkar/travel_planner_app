@@ -1,1 +1,10 @@
-backend/env
+# Ignore virtual environment
+backend/env/
+
+# Ignore Python cache
+__pycache__/
+*.pyc
+
+# Optional: VSCode settings, OS-specific files
+.vscode/
+.DS_Store
