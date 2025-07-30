@@ -7,7 +7,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000", 
-        "https://your-nextjs-frontend.vercel.app"
+        "https://travel-planner-app-chi.vercel.app"
     ],
     allow_credentials=True,
     allow_methods=["*"],
