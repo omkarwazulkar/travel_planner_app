@@ -31,7 +31,8 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t omkarwazulkar/python_app:${{ github.sha }} .
+        run: docker build -t omkarwazulkar/python_app:${{ github.sha }} -f backend/Dockerfile .
+
 
       - name: Push Docker image
         run: docker push your_dockerhub_username/your_image_name:${{ github.sha }}
