@@ -36,6 +36,7 @@ jobs:
       - name: Run Docker
         run: |
           docker run -d -p 8000:8000 omkarwazulkar/python_app:${{ github.sha }}
+          docker ps
           curl --silent --fail http://localhost:8000 || exit 1
 
       - name: Push Docker image
