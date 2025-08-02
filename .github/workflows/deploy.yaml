@@ -33,8 +33,10 @@ jobs:
       - name: Build Docker image
         run: docker build -t omkarwazulkar/python_app:${{ github.sha }} -f backend/Dockerfile .
 
-      - name: Run Docker container for testing
-        run: docker run -d -p 8000:8000 omkarwazulkar/python_app:${{ github.sha }}
+      - name: Run Docker
+        run: |
+          docker run -d -p 8000:8000 omkarwazulkar/python_app:${{ github.sha }}
+          curl --silent --fail http://localhost:8000 || exit 1
 
       - name: Push Docker image
         run: docker push omkarwazulkar/python_app:${{ github.sha }}
