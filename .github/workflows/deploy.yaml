@@ -35,6 +35,6 @@ jobs:
 
 
       - name: Push Docker image
-        run: docker push your_dockerhub_username/your_image_name:${{ github.sha }}
+        run: docker push omkarwazulkar/python_app:${{ github.sha }}
 
    
