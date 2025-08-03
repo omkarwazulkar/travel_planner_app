@@ -31,13 +31,13 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/travel-backend -f backend/Dockerfile .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/travel_backend -f backend/Dockerfile .
 
       - name: Run Docker
-        run: docker run -d -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/travel-backend
+        run: docker run -d -p 8000:8000 ${{ secrets.DOCKER_USERNAME }}/travel_backend
 
       - name: Push Docker image
-        run: docker push ${{ secrets.DOCKER_USERNAME }}/travel-backend
+        run: docker push ${{ secrets.DOCKER_USERNAME }}/travel_backend
 
 
    
