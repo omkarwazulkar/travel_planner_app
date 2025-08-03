@@ -34,9 +34,7 @@ jobs:
         run: docker build -t travel-backend -f backend/Dockerfile .
 
       - name: Run Docker
-        run: |
-          docker run -d -p 8000:8000 travel-backend
-          docker logs travel-backend
+        run: docker run -d -p 8000:8000 travel-backend
         
       - name: Push Docker image
         run: docker push travel-backend
