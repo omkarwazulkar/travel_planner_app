@@ -62,7 +62,7 @@ jobs:
       #       uname -a                    # Example command: print OS info
       #       whoami                      # Verify user
             
-      - name: SSH into EC2 and authenticate, pull, and run Docker container
+      - name: SSH into EC2 and Authenticate, Pull and Run Docker Container
         uses: appleboy/ssh-action@v0.1.7
         with:
           host: ${{ secrets.EC2_HOST }}
