@@ -34,11 +34,9 @@ jobs:
         run: docker build -t travel-backend -f backend/Dockerfile .
 
       - name: Run Docker
-        id: run_container
         run: |
-          container_id=$(docker run -d -p 8000:8000 travel-backend)
-          echo "Container ID: $container_id"
-          docker logs $container_id
+          docker run -d -p 8000:8000 travel-backend
+          docker logs travel-backend
         
       - name: Push Docker image
         run: docker push travel-backend
