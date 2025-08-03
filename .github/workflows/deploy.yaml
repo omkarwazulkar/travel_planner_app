@@ -31,14 +31,14 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t omkarwazulkar/python_app:${{ github.sha }} -f backend/Dockerfile .
+        run: docker build -t travel-backend -f backend/Dockerfile .
 
       - name: Run Docker
         run: |
-          docker run -d -p 8000:8000 omkarwazulkar/python_app:${{ github.sha }}
-          docker logs omkarwazulkar/python_app:${{ github.sha }}
+          docker run -d -p 8000:8000 travel-backend
+          docker logs travel-backend
         
       - name: Push Docker image
-        run: docker push omkarwazulkar/python_app:${{ github.sha }}
+        run: docker push travel-backend
 
    
