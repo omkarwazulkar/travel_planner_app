@@ -7,7 +7,7 @@ export default function Home() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    fetch("http://51.21.168.72:8000")
+    fetch("http://51.21.168.72:8000/")
       .then((res) => res.json())
       .then((data) => setMessage(data.message))
       .catch((err) => console.error("API error:", err));
