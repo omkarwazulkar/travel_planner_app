@@ -7,7 +7,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000", 
-        "http://13.60.225.137:8000"
+        "http://13.51.121.69:8000"
         "https://travel-planner-app-chi.vercel.app"
     ],
     allow_credentials=True,
