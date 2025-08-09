@@ -36,7 +36,16 @@ jobs:
 
       - name: Push Docker Image to ECR
         run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel:latest
-            
+      
+      - name: Build Frontend Docker Image
+        run: docker build --no-cache -t frontend -f frontend/Dockerfile .
+
+      - name: Tag Frontend Docker Image for ECR
+        run: docker tag frontend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest
+
+      - name: Push Frontend Docker Image to ECR
+        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest
+
       - name: SSH into EC2, Clean Old Docker Data, and Run New Image
         uses: appleboy/ssh-action@v0.1.7
         with:
