@@ -62,11 +62,15 @@ jobs:
             docker stop travel || true
             docker rm travel || true
 
+            echo "Deleted"
+
             # Remove all stopped containers (if any remain)
             docker container prune -f
 
             # Remove all dangling images (untagged and unused images)
             docker image prune -f
+
+            echo "Deleted Images"
 
             # Run the new container
             docker run -d --restart always --name travel -p 8000:8000 \
