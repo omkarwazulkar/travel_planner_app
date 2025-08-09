@@ -20,25 +20,22 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       
-      # - name: Login to Amazon ECR
-      #   id: login-ecr
-      #   uses: aws-actions/amazon-ecr-login@v1
-      #   with:
-      #     mask-password: true
-      #     registry-type: private
-      #     skip-logout: false
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          mask-password: true
+          registry-type: private
+          skip-logout: false
 
-      #- name: Build Docker Image
-      #  run: docker build --no-cache -t travel_backend -f backend/Dockerfile .
-      
-      # - name: Build Docker Image
-      #   run: docker build -t travel_backend -f backend/Dockerfile .
+      - name: Build Docker Image
+        run: docker build --no-cache -t travel_backend -f backend/Dockerfile .
 
-      # - name: Tag Docker Image for ECR
-      #   run: docker tag travel_backend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
+      - name: Tag Docker Image for ECR
+        run: docker tag travel_backend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
 
-      # - name: Push Docker Image to ECR
-      #   run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
+      - name: Push Docker Image to ECR
+        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
             
       - name: SSH into EC2 and Authenticate, Pull and Run Docker Image
         uses: appleboy/ssh-action@v0.1.7
