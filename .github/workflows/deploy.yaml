@@ -76,16 +76,15 @@ jobs:
             docker run -d --restart always --name travel -p 8000:8000 \
               ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel:latest
 
-              # uses: appleboy/ssh-action@v0.1.7
-              # with:
-              #   host: ${{ secrets.EC2_HOST }}
-              #   username: ec2-user
-              #   key: ${{ secrets.EC2_SSH_KEY }}
-              #   port: 22
-              #   script: |
-              #     echo "Connected successfully to EC2"                 
-              #     aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
-              #     docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel:latest
-              
-              #     docker run -d --restart always --name travel -p 8000:8000 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel:latest
+              uses: appleboy/ssh-action@v0.1.7
+              with:
+                host: ${{ secrets.EC2_HOST }}
+                username: ec2-user
+                key: ${{ secrets.EC2_SSH_KEY }}
+                port: 22
+                script: |
+                  echo "Connected successfully to EC2"                 
+                  aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+                  docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel:latest
+                  docker run -d --restart always --name travel -p 8000:8000 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel:latest
 
