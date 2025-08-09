@@ -58,9 +58,9 @@ jobs:
             # Pull the latest image from ECR
             docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel:latest
 
-            # # Stop and remove old container
-            # docker stop travel || true
-            # docker rm travel || true
+            # Stop and remove old container
+            docker stop travel || true
+            docker rm travel || true
 
             # Remove all stopped containers (if any remain)
             docker container prune -f
@@ -82,7 +82,6 @@ jobs:
               #     echo "Connected successfully to EC2"                 
               #     aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
               #     docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel:latest
-              #     docker stop travel || true
-              #     docker rm travel || true
+              
               #     docker run -d --restart always --name travel -p 8000:8000 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel:latest
 
