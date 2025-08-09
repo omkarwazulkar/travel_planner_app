@@ -65,6 +65,9 @@ jobs:
             docker stop travel || true
             docker rm travel || true
 
+            docker stop frontend || true
+            docker rm frontend || true
+
             # Remove all stopped containers
             docker container prune -f
 
@@ -73,7 +76,11 @@ jobs:
 
             # Pull the latest image from ECR
             docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel:latest
+            docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest
 
             # Run the new container
             docker run -d --restart always --name travel -p 8000:8000 \
               ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel:latest
+
+            docker run -d --restart always --name frontend -p 3000:3000 \
+              ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/frontend:latest
