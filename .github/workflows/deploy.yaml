@@ -20,22 +20,27 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
       
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-        with:
-          mask-password: true
-          registry-type: private
-          skip-logout: false
+      # - name: Login to Amazon ECR
+      #   id: login-ecr
+      #   uses: aws-actions/amazon-ecr-login@v1
+      #   with:
+      #     mask-password: true
+      #     registry-type: private
+      #     skip-logout: false
 
+<<<<<<< HEAD
       - name: Build Docker Image
         run: docker build --no-cache -t travel_backend -f backend/Dockerfile .
+=======
+      # - name: Build Docker Image
+      #   run: docker build -t travel_backend -f backend/Dockerfile .
+>>>>>>> ac023c0 (Update)
 
-      - name: Tag Docker Image for ECR
-        run: docker tag travel_backend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
+      # - name: Tag Docker Image for ECR
+      #   run: docker tag travel_backend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
 
-      - name: Push Docker Image to ECR
-        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
+      # - name: Push Docker Image to ECR
+      #   run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
             
       - name: SSH into EC2 and Authenticate, Pull and Run Docker Image
         uses: appleboy/ssh-action@v0.1.7
@@ -46,11 +51,41 @@ jobs:
           port: 22
           script: |
             echo "Connected successfully to EC2"
-            uname -a                 
-            whoami                      
-            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+            uname -a
+            whoami
+
+            # Login to ECR
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
+              | docker login --username AWS --password-stdin \
+              ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+
+            # Remove old cached image (to force pulling the new one)
+            docker image rm ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest || true
+
+            # Pull the latest image from ECR
             docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
+
+            # Stop and remove old container
             docker stop travel_backend || true
             docker rm travel_backend || true
-            docker run -d --restart always --name travel_backend -p 8000:8000 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
+
+            # Run the new container
+            docker run -d --restart always --name travel_backend -p 8000:8000 \
+              ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
+
+              uses: appleboy/ssh-action@v0.1.7
+              with:
+                host: ${{ secrets.EC2_HOST }}
+                username: ec2-user
+                key: ${{ secrets.EC2_SSH_KEY }}
+                port: 22
+                script: |
+                  echo "Connected successfully to EC2"
+                  uname -a                 
+                  whoami                      
+                  aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+                  docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
+                  docker stop travel_backend || true
+                  docker rm travel_backend || true
+                  docker run -d --restart always --name travel_backend -p 8000:8000 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
 
