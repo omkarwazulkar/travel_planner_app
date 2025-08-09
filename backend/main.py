@@ -6,7 +6,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://travel-planner-app-chi.vercel.app"
+        "http://13.50.201.174:3000/"
     ],
     allow_credentials=True,
     allow_methods=["*"],
