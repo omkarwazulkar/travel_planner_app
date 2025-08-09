@@ -28,13 +28,11 @@ jobs:
       #     registry-type: private
       #     skip-logout: false
 
-<<<<<<< HEAD
-      - name: Build Docker Image
-        run: docker build --no-cache -t travel_backend -f backend/Dockerfile .
-=======
+      #- name: Build Docker Image
+      #  run: docker build --no-cache -t travel_backend -f backend/Dockerfile .
+      
       # - name: Build Docker Image
       #   run: docker build -t travel_backend -f backend/Dockerfile .
->>>>>>> ac023c0 (Update)
 
       # - name: Tag Docker Image for ECR
       #   run: docker tag travel_backend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
