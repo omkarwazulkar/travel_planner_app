@@ -52,5 +52,5 @@ jobs:
             docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
             docker stop travel_backend || true
             docker rm travel_backend || true
-            docker run -d --name travel_backend -p 8000:8000 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
+            docker run -d --restart always --name travel_backend -p 8000:8000 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
 
