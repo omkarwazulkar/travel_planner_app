@@ -18,20 +18,24 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: eu-north-1
-
+          aws-region: ${{ secrets.AWS_REGION }}
+      
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
+        with:
+          mask-password: true
+          registry-type: private
+          skip-logout: false
 
       - name: Build Docker Image
         run: docker build -t travel_backend -f backend/Dockerfile .
 
       - name: Tag Docker Image for ECR
-        run: docker tag travel_backend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-north-1.amazonaws.com/travel_backend:latest
+        run: docker tag travel_backend:latest ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
 
       - name: Push Docker Image to ECR
-        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-north-1.amazonaws.com/travel_backend:latest
+        run: docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
             
       - name: SSH into EC2 and Authenticate, Pull and Run Docker Image
         uses: appleboy/ssh-action@v0.1.7
@@ -44,9 +48,9 @@ jobs:
             echo "Connected successfully to EC2"
             uname -a                 
             whoami                      
-            aws ecr get-login-password --region eu-north-1 | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-north-1.amazonaws.com
-            docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-north-1.amazonaws.com/travel_backend:latest
+            aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com
+            docker pull ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
             docker stop travel_backend || true
             docker rm travel_backend || true
-            docker run -d --name travel_backend -p 8000:8000 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.eu-north-1.amazonaws.com/travel_backend:latest
+            docker run -d --name travel_backend -p 8000:8000 ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/travel_backend:latest
 
