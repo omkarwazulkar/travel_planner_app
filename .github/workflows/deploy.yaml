@@ -46,8 +46,6 @@ jobs:
           port: 22
           script: |
             echo "Connected successfully to EC2"
-            uname -a
-            whoami
 
             # Login to ECR
             aws ecr get-login-password --region ${{ secrets.AWS_REGION }} \
