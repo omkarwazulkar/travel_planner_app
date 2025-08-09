@@ -7,7 +7,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000", 
-        "https://51.21.168.72/",
+        # "https://51.21.168.72/",
         "https://travel-planner-app-chi.vercel.app"
     ],
     allow_credentials=True,
@@ -17,4 +17,4 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-   return {"message":"Hey Man, Omkar"}
+   return {"message":"Hello"}
