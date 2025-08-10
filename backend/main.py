@@ -6,7 +6,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "https://omkarwazulkar.com"
+        "https://13.50.201.174"
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -15,4 +15,4 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-   return {"message":"Hello Omi"}
+   return {"message":"Hello Di"}
